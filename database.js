@@ -24,6 +24,7 @@ export async function createUser(name, age, email, roll_no) {
     if (isEmailAlreadyUsed) {
         const [result] = await pool.query(`INSERT INTO student (name, age, email, roll_no) values (?, ?, ?, ?)`, [name, age, email, roll_no]);
         console.log(result);
+        return result;
     } else {
         return { 'failed': 'true' };
     }
