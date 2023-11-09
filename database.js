@@ -25,7 +25,7 @@ export async function createUser(name, age, email, roll_no) {
         const [result] = await pool.query(`INSERT INTO student (name, age, email, roll_no) values (?, ?, ?, ?)`, [name, age, email, roll_no]);
         console.log(result);
     } else {
-        return false;
+        return { 'failed': 'true' };
     }
 
 }

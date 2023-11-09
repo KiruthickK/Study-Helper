@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-
+import { createUser } from 'database';
 const app = express();
 
 // for getting directory path
@@ -24,3 +24,13 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login', { page_title: "Login | Signup" })
 });
+app.post('/login', async (req, res) => {
+    const { name, email, age, roll_no } = req.body;
+    const id = await createUser(name, age, email, roll_no)
+    if (id.failed) {
+        console.log('failed');
+    } else {
+        console.log('User created...')
+        console.log(id)
+    }
+})
