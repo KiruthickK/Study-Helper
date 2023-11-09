@@ -15,6 +15,18 @@ const pool = mysql.createPool({
     password: user_pass,
     database: database
 }).promise()
+export async function getCoursesOfStudent(id) {
+    const [courses] = await pool.query(`SELECT * FROM courses WHERE S_Id = ?`, [id]);
+    return courses;
+}
+export async function checkUser(email, password) {
+    const [result] = await pool.query(`SELECT S_Id FROM student WHERE email = ? and password = ?`, [email, password]);
+    if (result.length == 0) {
+        return { 'failed': 'true' };
+    } else {
+        return getCoursesOfStudent(id);
+    }
+}
 export async function checkUniqueEmail(email) {
     const [result] = await pool.query(`SELECT name FROM student WHERE email = ?`, [email]);
     return result.length == 0;
@@ -30,4 +42,6 @@ export async function createUser(name, age, email, roll_no) {
     }
 
 }
+const courses = await getCoursesOfStudent(1);
+console.log(courses.length)
 // const flag = await checkUniqueEmail('kiruthicdfgk101@gmail.com');

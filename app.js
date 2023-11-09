@@ -17,6 +17,10 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.listen(3000, () => console.log('Listening...'));
 
+app.use((err, req, res) => {
+    console.log(err.stack)
+    res.status(500).send('Something Broken wait ...')
+})
 app.get('/', (req, res) => {
     res.render('index', { page_title: 'StudyHelper' })
 });
@@ -34,5 +38,4 @@ app.post('/login', async (req, res) => {
         console.log('User created...')
         console.log(id)
     }
-    res.send("hello")
 })
