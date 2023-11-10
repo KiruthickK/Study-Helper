@@ -1,10 +1,8 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser } from './database.js';
+import { createUser, checkUser, getCoursesOfStudent } from './database.js';
 import session from 'express-session';
-import cookieParser from "cookie-parser";
-
 const app = express();
 
 // for getting directory path
@@ -15,11 +13,10 @@ const __dirname = dirname(__filename);
 app.use(express.static('public'));
 app.use("/scripts", express.static(__dirname + '/scripts'));
 app.use(express.json());
-app.use(cookieParser());
 app.use(session({
     secret: "authentication_codes",
-    saveUninitialized: true,
-    resave: true
+    cookie: { maxAge: 1000 * 60 * 15 },
+    saveUninitialized: false
 }));
 
 // view engine
@@ -34,36 +31,42 @@ app.get('/', (req, res) => {
     res.render('index', { page_title: 'StudyHelper' })
 });
 
-app.get('/login', (req, res) => {
-    res.render('login', { page_title: "Login | Signup" })
-});
-app.post('/signup', async (req, res) => {
-    const { name, email, age, roll_no } = req.body;
-    const id = await createUser(name, age, email, roll_no)
-    // console.log(id)
-    if (id.failed) {
-        console.log('failed');
+app.get('/login', async (req, res) => {
+    if (req.session.authenticated) {
+        const courses = await getCoursesOfStudent(req.session.userId)
+        console.log(courses)
+        res.render('course', { page_title: "hello", courses: courses })
+        // TODO send course page with revelant links I mean handle here
     } else {
-        console.log('User created...')
-        console.log(id)
-        // res.render('course', { courses: id })
+        res.render('login', { page_title: "Login | Signup" })
     }
+});
+// TODO sign up later
+app.post('/signup', async (req, res) => {
+
 })
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const result = await checkUser(email, password)
-    // console.log(id)
     if (result.failed) {
         console.log('failed');
     } else {
         console.log('User Authenticated...')
-        console.log(result.id)
-
-        // res.render('course', { page_title: 'course Page', id: id })
-        res.json(result) //as of now sending the id of the user to store them in the cookies or session to authenticate
+        req.session.authenticated = true;
+        req.session.userId = result.id
+        res.json(result)
     }
 })
-app.get('/course', (req, res) => {
-    console.log(req.session.id)
-    res.render('course', { page_title: "hello", courses: "courses are not meant to be difficult" })
+function isAuthenticated(req, res, next) {
+    if (req.session.authenticated) {
+        return next();
+    } else {
+        res.redirect('/login')
+    }
+}
+app.get('/course', isAuthenticated, async (req, res) => {
+    const courses = await getCoursesOfStudent(req.session.userId);
+    console.log(courses)
+    res.render('course', { page_title: "hello", courses: courses })
 })
+

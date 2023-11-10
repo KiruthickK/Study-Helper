@@ -24,8 +24,6 @@ function LoginUser() {
     fetch(url, requestOptions)
         .then(response => response.json())
         .then((json) => {
-            sessionStorage.setItem("user_id", json.id)
-            sessionStorage.setItem("auth_code", json.sessionString)
             window.location.href = '/course'
         })
         .catch(error => {

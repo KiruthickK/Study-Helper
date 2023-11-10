@@ -16,17 +16,8 @@ const pool = mysql.createPool({
     password: user_pass,
     database: database
 }).promise()
-function generateSessionString() {
-    const randomString = crypto.randomBytes(8).toString('hex');
-    return randomString;
-}
-async function storeSessionString(id) {
-    const randomString = generateSessionString();
-    const [result] = await pool.query(`INSERT INTO authentication_sessions (S_Id, auth_code) values (?, ?)`, [id, randomString])
-    if (result) {
-        return randomString;
-    }
-}
+
+
 export async function getCoursesOfStudent(id) {
     const [courses] = await pool.query(`SELECT * FROM courses WHERE S_Id = ?`, [id]);
     return courses;
@@ -36,8 +27,7 @@ export async function checkUser(email, password) {
     if (result.length == 0) {
         return { 'failed': 'true' };
     } else {
-        const sessionString = await storeSessionString(result[0].S_Id);
-        return { id: result[0].S_Id, sessionString: sessionString };
+        return { id: result[0].S_Id };
     }
 }
 export async function checkUniqueEmail(email) {
