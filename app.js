@@ -2,6 +2,9 @@ import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { createUser, checkUser } from './database.js';
+import session from 'express-session';
+import cookieParser from "cookie-parser";
+
 const app = express();
 
 // for getting directory path
@@ -12,6 +15,12 @@ const __dirname = dirname(__filename);
 app.use(express.static('public'));
 app.use("/scripts", express.static(__dirname + '/scripts'));
 app.use(express.json());
+app.use(cookieParser());
+app.use(session({
+    secret: "authentication_codes",
+    saveUninitialized: true,
+    resave: true
+}));
 
 // view engine
 app.set('view engine', 'ejs');
@@ -48,10 +57,13 @@ app.post('/login', async (req, res) => {
         console.log('failed');
     } else {
         console.log('User Authenticated...')
+        console.log(result.id)
+
         // res.render('course', { page_title: 'course Page', id: id })
         res.json(result) //as of now sending the id of the user to store them in the cookies or session to authenticate
     }
 })
 app.get('/course', (req, res) => {
+    console.log(req.session.id)
     res.render('course', { page_title: "hello", courses: "courses are not meant to be difficult" })
 })
