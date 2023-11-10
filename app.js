@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser } from './database.js';
+import { createUser, checkUser } from './database.js';
 const app = express();
 
 // for getting directory path
@@ -17,10 +17,10 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.listen(3000, () => console.log('Listening...'));
 
-app.use((err, req, res) => {
-    console.log(err.stack)
-    res.status(500).send('Something Broken wait ...')
-})
+// app.use((err, req, res) => {
+//     console.log(err.stack)
+//     res.status(500).send('Something Broken wait ...')
+// })
 app.get('/', (req, res) => {
     res.render('index', { page_title: 'StudyHelper' })
 });
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login', { page_title: "Login | Signup" })
 });
-app.post('/login', async (req, res) => {
+app.post('/signup', async (req, res) => {
     const { name, email, age, roll_no } = req.body;
     const id = await createUser(name, age, email, roll_no)
     // console.log(id)
@@ -37,5 +37,21 @@ app.post('/login', async (req, res) => {
     } else {
         console.log('User created...')
         console.log(id)
+        // res.render('course', { courses: id })
     }
+})
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const result = await checkUser(email, password)
+    // console.log(id)
+    if (result.failed) {
+        console.log('failed');
+    } else {
+        console.log('User Authenticated...')
+        // res.render('course', { page_title: 'course Page', id: id })
+        res.json(result) //as of now sending the id of the user to store them in the cookies or session to authenticate
+    }
+})
+app.get('/course', (req, res) => {
+    res.render('course', { page_title: "hello", courses: "courses are not meant to be difficult" })
 })
