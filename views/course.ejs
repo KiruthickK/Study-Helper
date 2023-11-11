@@ -2,19 +2,19 @@
 
     <body>
         <div class="container bg-light pt-3">
-            <h1>Hello</h1>
+            <h1>Hi <%= userName %>
+            </h1>
             <h1>List of Courses</h1>
-
-            <ul>
-                <% courses.forEach(course=> { %>
-                    <li>
-                        <strong>Course ID:</strong>
-                        <%= course.C_Id %>,
-                            <strong>Course Name:</strong>
-                            <%= course.Course_name %>
-                    </li>
-                    <% }); %>
-            </ul>
+            <br>
+            <% courses.forEach(course=> { %>
+                <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary" onclick="loadCourse(this)">
+                    <strong>Course ID:</strong>
+                    <%= course.C_Id %>,
+                        <strong>Course Name:</strong>
+                        <%= course.Course_name %>
+                            </li>
+                </div>
+                <% }); %>
 
         </div>
         <script src="/scripts/coursePage.js"></script>

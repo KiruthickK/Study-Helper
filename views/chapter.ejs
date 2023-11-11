@@ -2,7 +2,20 @@
 
     <body>
         <div class="container bg-light pt-3">
-            <h1>Hello</h1>
+            <h1>Hi <%= userName %>
+            </h1>
+            <h1>List of chapters</h1>
+            <br>
+            <% chapters.forEach(chapter=> { %>
+                <div id="course_<%= chapter.chapter_id %>" class="row rounded bg-secondary" onclick="loadChapter(this)">
+                    <strong>Course ID:</strong>
+                    <%= chapter.chapter_id %>,
+                        <strong>Chapter Name:</strong>
+                        <%= chapter.chapter_name %>
+                            </li>
+                </div>
+                <% }); %>
+
         </div>
     </body>
 

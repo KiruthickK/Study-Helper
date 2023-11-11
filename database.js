@@ -16,24 +16,12 @@ const pool = mysql.createPool({
     password: user_pass,
     database: database
 }).promise()
-
-
-export async function getCoursesOfStudent(id) {
-    const [courses] = await pool.query(`SELECT * FROM courses WHERE S_Id = ?`, [id]);
-    return courses;
-}
-export async function checkUser(email, password) {
-    const [result] = await pool.query(`SELECT S_Id FROM student WHERE email = ? and password = ?`, [email, password]);
-    if (result.length == 0) {
-        return { 'failed': 'true' };
-    } else {
-        return { id: result[0].S_Id };
-    }
-}
-export async function checkUniqueEmail(email) {
+// for checking whether the creating account's email already registered or not
+async function checkUniqueEmail(email) {
     const [result] = await pool.query(`SELECT name FROM student WHERE email = ?`, [email]);
     return result.length == 0;
 }
+// for signup
 export async function createUser(name, age, email, roll_no) {
     const isEmailAlreadyUsed = await checkUniqueEmail(email);
     if (isEmailAlreadyUsed) {
@@ -43,5 +31,23 @@ export async function createUser(name, age, email, roll_no) {
     } else {
         return { 'failed': 'true' };
     }
+}
+// for login
+export async function checkUser(email, password) {
+    const [result] = await pool.query(`SELECT S_Id, name FROM student WHERE email = ? and password = ?`, [email, password]);
+    if (result.length == 0) {
+        return { 'failed': 'true' };
+    } else {
+        return { id: result[0].S_Id, username: result[0].name };
+    }
+}
 
+
+export async function getCoursesOfStudent(id) {
+    const [courses] = await pool.query(`SELECT * FROM courses WHERE S_Id = ?`, [id]);
+    return courses;
+}
+export async function getChapters(id) {
+    const [chapters] = await pool.query(`SELECT * FROM chapters WHERE course_id = ?`, [id]);
+    return chapters;
 }

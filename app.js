@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser, getCoursesOfStudent } from './database.js';
+import { createUser, checkUser, getCoursesOfStudent, getChapters } from './database.js';
 import session from 'express-session';
 const app = express();
 
@@ -35,7 +35,7 @@ app.get('/login', async (req, res) => {
     if (req.session.authenticated) {
         const courses = await getCoursesOfStudent(req.session.userId)
         console.log(courses)
-        res.render('course', { page_title: "hello", courses: courses })
+        res.render('course', { page_title: "Course Page", userName: req.session.userName, courses: courses })
         // TODO send course page with revelant links I mean handle here
     } else {
         res.render('login', { page_title: "Login | Signup" })
@@ -51,9 +51,11 @@ app.post('/login', async (req, res) => {
     if (result.failed) {
         console.log('failed');
     } else {
+        console.log(result)
         console.log('User Authenticated...')
         req.session.authenticated = true;
         req.session.userId = result.id
+        req.session.userName = result.username
         res.json(result)
     }
 })
@@ -66,7 +68,16 @@ function isAuthenticated(req, res, next) {
 }
 app.get('/course', isAuthenticated, async (req, res) => {
     const courses = await getCoursesOfStudent(req.session.userId);
-    console.log(courses)
-    res.render('course', { page_title: "hello", courses: courses })
+    res.render('course', { page_title: "Course Page", userName: req.session.userName, courses: courses })
+})
+app.post('/getcourse', async (req, res) => {
+    const { course_id } = req.body;
+    req.session.courseId = course_id;
+    res.send({ yes: 'Yes' })
+})
+app.get('/chapter', isAuthenticated, async (req, res) => {
+    const chapters = await getChapters(req.session.courseId);
+    console.log(req.session.courseId)
+    res.render('chapter', { page_title: 'Chapter Page', userName: req.session.userName, chapters: chapters });
 })
 
