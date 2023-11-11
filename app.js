@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser, getCoursesOfStudent, getChapters } from './database.js';
+import { createUser, checkUser, getCoursesOfStudent, getChapters, getNotes } from './database.js';
 import session from 'express-session';
 const app = express();
 
@@ -16,7 +16,8 @@ app.use(express.json());
 app.use(session({
     secret: "authentication_codes",
     cookie: { maxAge: 1000 * 60 * 15 },
-    saveUninitialized: false
+    saveUninitialized: false,
+    resave: true
 }));
 
 // view engine
@@ -41,9 +42,21 @@ app.get('/login', async (req, res) => {
         res.render('login', { page_title: "Login | Signup" })
     }
 });
+app.get('/signup', (req, res) => {
+    res.render('signup', { page_title: 'Sign Up' })
+})
 // TODO sign up later
 app.post('/signup', async (req, res) => {
-
+    const { username, roll_no, age, email, password } = req.body;
+    const isAccountCreated = await createUser(username, age, email, roll_no, password);
+    if (isAccountCreated.failed) {
+        res.json({ 'emailExsisting': 'true' })
+    } else {
+        req.session.authenticated = true;
+        req.session.userId = isAccountCreated.id
+        req.session.userName = isAccountCreated.username
+        res.json({ 'success': 'true' })
+    }
 })
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -70,7 +83,7 @@ app.get('/course', isAuthenticated, async (req, res) => {
     const courses = await getCoursesOfStudent(req.session.userId);
     res.render('course', { page_title: "Course Page", userName: req.session.userName, courses: courses })
 })
-app.post('/getcourse', async (req, res) => {
+app.post('/getcourse', (req, res) => {
     const { course_id } = req.body;
     req.session.courseId = course_id;
     res.send({ yes: 'Yes' })
@@ -79,5 +92,15 @@ app.get('/chapter', isAuthenticated, async (req, res) => {
     const chapters = await getChapters(req.session.courseId);
     console.log(req.session.courseId)
     res.render('chapter', { page_title: 'Chapter Page', userName: req.session.userName, chapters: chapters });
+})
+app.post('/loadchapter', (req, res) => {
+    const { chapter_id } = req.body;
+    req.session.chapter_id = chapter_id;
+    res.send({ yes: 'yes' })
+})
+app.get('/notes', isAuthenticated, async (req, res) => {
+    const notes = await getNotes(req.session.chapter_id);
+    console.log(notes);
+    res.render('notes', { page_title: 'Notes Page', userName: req.session.userName, notes: notes });
 })
 

@@ -9,6 +9,8 @@ function loadCourse(id) {
     }).then((result) => {
         if (result) {
             window.location.href = '/chapter'
+        } else {
+            // ADD a message to handle error
         }
     }).catch((err) => {
         console.log(err)

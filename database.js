@@ -22,12 +22,12 @@ async function checkUniqueEmail(email) {
     return result.length == 0;
 }
 // for signup
-export async function createUser(name, age, email, roll_no) {
-    const isEmailAlreadyUsed = await checkUniqueEmail(email);
-    if (isEmailAlreadyUsed) {
-        const [result] = await pool.query(`INSERT INTO student (name, age, email, roll_no) values (?, ?, ?, ?)`, [name, age, email, roll_no]);
+export async function createUser(name, age, email, roll_no, password) {
+    const isEmailNotUsed = await checkUniqueEmail(email);
+    if (isEmailNotUsed) {
+        const [result] = await pool.query(`INSERT INTO student (name, age, email, roll_no, password) values (?, ?, ?, ?, ?)`, [name, age, email, roll_no, password]);
         console.log(result);
-        return result;
+        return checkUser(email, password);
     } else {
         return { 'failed': 'true' };
     }
@@ -50,4 +50,8 @@ export async function getCoursesOfStudent(id) {
 export async function getChapters(id) {
     const [chapters] = await pool.query(`SELECT * FROM chapters WHERE course_id = ?`, [id]);
     return chapters;
+}
+export async function getNotes(id) {
+    const [notes] = await pool.query(`SELECT * FROM notes WHERE chapter_id = ?`, [id]);
+    return notes;
 }

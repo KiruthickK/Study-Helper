@@ -1,23 +1,26 @@
 <%- include('Header'); -%>
+    </div>
+    </div>
+    </div>
+    </nav>
 
-    <body>
-        <div class="container bg-light pt-3">
-            <h1>Hi <%= userName %>
-            </h1>
-            <h1>List of Courses</h1>
-            <br>
-            <% courses.forEach(course=> { %>
-                <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary" onclick="loadCourse(this)">
-                    <strong>Course ID:</strong>
-                    <%= course.C_Id %>,
-                        <strong>Course Name:</strong>
-                        <%= course.Course_name %>
-                            </li>
-                </div>
-                <% }); %>
+    <div class="container bg-light pt-3">
+        <h1>Hi <%= userName %>
+        </h1>
+        <h1>List of Courses</h1>
+        <br>
+        <% courses.forEach(course=> { %>
+            <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary" onclick="loadCourse(this)">
+                <strong>Course ID:</strong>
+                <%= course.C_Id %>,
+                    <strong>Course Name:</strong>
+                    <%= course.Course_name %>
+                        </li>
+            </div>
+            <% }); %>
 
-        </div>
-        <script src="/scripts/coursePage.js"></script>
+    </div>
+    <script src="/scripts/coursePage.js"></script>
     </body>
 
     </html>

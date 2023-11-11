@@ -1,9 +1,27 @@
 <%- include('Header'); -%>
+    </div>
+    </div>
+    </div>
+    </nav>
 
-    <body>
-        <div class="container bg-light pt-3">
-            <h1>Hello</h1>
-        </div>
+    <div class="container bg-light pt-3">
+        <h1>Hi <%= userName %>
+        </h1>
+        <h1>List of chapters</h1>
+        <br>
+        <% notes.forEach(note=> { %>
+            <div id="note_<%= note.note_id %>" class="row rounded bg-secondary" onclick="loadNote(this)">
+                <strong>Notes ID:</strong>
+                <%= note.Notes_id %>,
+                    <strong>Topic:</strong>
+                    <%= note.topic %>
+                        <strong>Notes:</strong>
+                        <%= note.notes %>
+            </div>
+            <% }); %>
+
+    </div>
+    <script src="/scripts/notesPage.js"></script>
     </body>
 
     </html>
