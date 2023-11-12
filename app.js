@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser, getCoursesOfStudent, getChapters, getNotes } from './database.js';
+import { createUser, checkUser, getCoursesOfStudent, createCourse, getChapters, getNotes } from './database.js';
 import session from 'express-session';
 const app = express();
 
@@ -87,6 +87,15 @@ app.post('/getcourse', (req, res) => {
     const { course_id } = req.body;
     req.session.courseId = course_id;
     res.send({ yes: 'Yes' })
+})
+app.post('/createCourse', async (req, res) => {
+    const { newCourseName } = req.body;
+    const result = await createCourse(req.session.userId, newCourseName)
+    if (result.insertId) {
+        res.json({ id: result.insertId, success: true });
+    } else {
+        res.json({ failed: true });
+    }
 })
 app.get('/chapter', isAuthenticated, async (req, res) => {
     const chapters = await getChapters(req.session.courseId);

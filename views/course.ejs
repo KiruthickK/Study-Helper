@@ -4,18 +4,25 @@
     </div>
     </nav>
 
-    <div class="container bg-light pt-3">
+    <div class="container bg-light pt-3" id="mainDiv">
         <h1>Hi <%= userName %>
         </h1>
         <h1>List of Courses</h1>
         <br>
+        <div class="row">
+            <button onclick="showForm()">Add a new course</button>
+            <span class="d-none" id="course_input_form">
+                Enter the course name <br>
+                <input type="text" name="new_course_name" id="new_course_name">
+                <button onclick="addCourse()">Add</button>
+            </span>
+        </div>
         <% courses.forEach(course=> { %>
-            <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary" onclick="loadCourse(this)">
+            <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary p-3" onclick="loadCourse(this)">
                 <strong>Course ID:</strong>
                 <%= course.C_Id %>,
                     <strong>Course Name:</strong>
                     <%= course.Course_name %>
-                        </li>
             </div>
             <% }); %>
 

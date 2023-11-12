@@ -42,7 +42,16 @@ export async function checkUser(email, password) {
     }
 }
 
+export async function createCourse(sid, course) {
+    const [result] = await pool.query(`INSERT INTO courses (S_Id, Course_name) values (?, ?)`, [sid, course])
+    return result;
+}
+export async function deleteCourse(sid, course) {
+    // TODO
+}
+export async function updateCourse(sid, course) {
 
+}
 export async function getCoursesOfStudent(id) {
     const [courses] = await pool.query(`SELECT * FROM courses WHERE S_Id = ?`, [id]);
     return courses;
