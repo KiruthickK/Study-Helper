@@ -4,11 +4,21 @@
     </div>
     </nav>
 
-    <div class="container bg-light pt-3">
+    <div class="container bg-light pt-3" id="mainDiv">
         <h1>Hi <%= userName %>
         </h1>
         <h1>List of chapters</h1>
         <br>
+        <div class="row">
+            <button onclick="showForm()">Add notes</button>
+            <span class="d-none" id="notes_input_form">
+                Enter the Topic<br>
+                <input type="text" name="new_notes_name" id="new_notes_name">
+                Enter the notes <br>
+                <textarea id="notes_content" name="notes_content" rows="8" cols="50"></textarea>
+                <button onclick="addNotes()">Add</button>
+            </span>
+        </div>
         <% notes.forEach(note=> { %>
             <div id="note_<%= note.note_id %>" class="row rounded bg-secondary" onclick="loadNote(this)">
                 <strong>Notes ID:</strong>

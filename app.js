@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser, getCoursesOfStudent, createCourse, getChapters, createChapter, getNotes } from './database.js';
+import { createUser, checkUser, getCoursesOfStudent, createCourse, getChapters, createChapter, getNotes, createNotes } from './database.js';
 import session from 'express-session';
 const app = express();
 
@@ -116,9 +116,18 @@ app.post('/loadchapter', (req, res) => {
     req.session.chapter_id = chapter_id;
     res.send({ yes: 'yes' })
 })
+
 app.get('/notes', isAuthenticated, async (req, res) => {
     const notes = await getNotes(req.session.chapter_id);
-    console.log(notes);
     res.render('notes', { page_title: 'Notes Page', userName: req.session.userName, notes: notes });
+})
+app.post('/createNotes', async (req, res) => {
+    const { newNotesTitle, notes } = req.body;
+    const result = await createNotes(req.session.chapter_id, newNotesTitle, notes);
+    if (result.insertId) {
+        res.json({ id: result.insertId, success: true });
+    } else {
+        res.json({ failed: true });
+    }
 })
 

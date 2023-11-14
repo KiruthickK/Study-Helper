@@ -68,3 +68,7 @@ export async function getNotes(id) {
     const [notes] = await pool.query(`SELECT * FROM notes WHERE chapter_id = ?`, [id]);
     return notes;
 }
+export async function createNotes(cid, notes_title, notes) {
+    const [result] = await pool.query(`INSERT INTO notes (chapter_id , topic , notes) VALUES (?, ?, ?)`, [cid, notes_title, notes])
+    return result;
+}
