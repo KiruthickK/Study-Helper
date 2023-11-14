@@ -22,11 +22,17 @@
         <% notes.forEach(note=> { %>
             <div id="note_<%= note.note_id %>" class="row rounded bg-secondary" onclick="loadNote(this)">
                 <strong>Notes ID:</strong>
-                <%= note.Notes_id %>,
-                    <strong>Topic:</strong>
+                <span id="notes_id_<%=note.note_id%>">
+                    <%= note.Notes_id %>,
+                </span>
+                <strong>Topic:</strong>
+                <span id="note_topic_<%=note.note_id%>">
                     <%= note.topic %>
-                        <strong>Notes:</strong>
-                        <%= note.notes %>
+                </span>
+                <strong>Notes:</strong>
+                <span id="note_notes_<%=note.note_id%>">
+                    <%= note.notes %>
+                </span>
             </div>
             <% }); %>
 

@@ -40,11 +40,16 @@ function addCourse() {
             div.innerHTML = `<strong>
                                 Course ID: 
                             </strong>
+                            <span id="cid_${json.id} %>">
                                 ${json.id} 
+                            </span>
                             <strong>
                                 Course name: 
                             </strong>
-                                ${newCourseName}`;
+                            <span id="cname_${json.id}">
+                                ${newCourseName}
+                            </span>
+                            `;
             div.addEventListener('click', function (event) {
                 loadCourse(event.target);
             });

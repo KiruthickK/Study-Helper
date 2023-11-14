@@ -19,10 +19,13 @@
         <% chapters.forEach(chapter=> { %>
             <div id="chapter_<%= chapter.chapter_id %>" class="row rounded bg-secondary" onclick="loadChapter(this)">
                 <strong>Course ID:</strong>
-                <%= chapter.chapter_id %>,
-                    <strong>Chapter Name:</strong>
+                <span id="cid_<%=chapter.chapter_id %>">
+                    <%= chapter.chapter_id %>
+                </span>
+                <strong>Chapter Name:</strong>
+                <span id="cname_<%=chapter.chapter_id %>">
                     <%= chapter.chapter_name %>
-                        </li>
+                </span>
             </div>
             <% }); %>
 

@@ -28,13 +28,20 @@ function addNotes() {
                             </strong>
                                 ${json.id} 
                             <strong>
+                            <span id="notes_id_${json.id}">
                                 Notes topic: 
+                            </span>
                             </strong>
+                            <span id="note_topic_${json.id}">
                                 ${newNotesTitle}
+                            </span>
                             <strong>
                                 Notes
                             </strong>
-                                ${notes}`;
+                            <span id="note_notes_${json.id}">
+                                ${notes}
+                            </span>
+                            `;
             div.addEventListener('click', function (event) {
                 loadCourse(event.target);
             });

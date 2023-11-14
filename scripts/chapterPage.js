@@ -39,11 +39,15 @@ function addChapter() {
             div.innerHTML = `<strong>
                                 Chapter ID: 
                             </strong>
+                            <span id="cid_${json.id}">
                                 ${json.id} 
+                            </span>
                             <strong>
                                 Chapter name: 
                             </strong>
-                                ${newChapterName}`;
+                            <span id="cname_${newChapterName}">
+                                ${newChapterName}
+                            </span>`;
             div.addEventListener('click', function (event) {
                 loadChapter(event.target);
             });

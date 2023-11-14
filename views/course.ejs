@@ -20,9 +20,13 @@
         <% courses.forEach(course=> { %>
             <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary p-3" onclick="loadCourse(this)">
                 <strong>Course ID:</strong>
-                <%= course.C_Id %>,
-                    <strong>Course Name:</strong>
+                <span id="cid_<%=course.C_Id %>">
+                    <%= course.C_Id %>,
+                </span>
+                <strong>Course Name:</strong>
+                <span id="cname_<%=course.C_Id %>">
                     <%= course.Course_name %>
+                </span>
             </div>
             <% }); %>
 
