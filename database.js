@@ -60,6 +60,10 @@ export async function getChapters(id) {
     const [chapters] = await pool.query(`SELECT * FROM chapters WHERE course_id = ?`, [id]);
     return chapters;
 }
+export async function createChapter(cid, chapter) {
+    const [result] = await pool.query(`INSERT INTO chapters(course_id, chapter_name) VALUES (?, ?)`, [cid, chapter])
+    return result;
+}
 export async function getNotes(id) {
     const [notes] = await pool.query(`SELECT * FROM notes WHERE chapter_id = ?`, [id]);
     return notes;

@@ -1,4 +1,5 @@
 function loadNote(id) {
-    const note_id = id.id.charAt(id.id.length - 1)
+    const ch = id.id.split('_');
+    const note_id = ch[1];
     console.log(note_id)
 }

@@ -3,11 +3,19 @@
     </div>
     </div>
     </nav>
-    <div class="container bg-light pt-3">
+    <div class="container bg-light pt-3" id="mainDiv">
         <h1>Hi <%= userName %>
         </h1>
         <h1>List of chapters</h1>
         <br>
+        <div class="row">
+            <button onclick="showForm()">Add a new Chapter</button>
+            <span class="d-none" id="chapter_input_form">
+                Enter the Chapter name <br>
+                <input type="text" name="new_chapter_name" id="new_chapter_name">
+                <button onclick="addChapter()">Add</button>
+            </span>
+        </div>
         <% chapters.forEach(chapter=> { %>
             <div id="chapter_<%= chapter.chapter_id %>" class="row rounded bg-secondary" onclick="loadChapter(this)">
                 <strong>Course ID:</strong>

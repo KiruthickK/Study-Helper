@@ -1,5 +1,7 @@
 function loadCourse(id) {
-    const course_id = id.id.charAt(id.id.length - 1)
+    console.log(id)
+    const ch = id.id.split('_');
+    const course_id = ch[1];
     fetch('/getcourse', {
         method: 'POST',
         headers: {
@@ -35,10 +37,17 @@ function addCourse() {
             div.id = 'course_' + json.id;
             console.log(div.id)
             div.classList.add('row', 'rounded', 'bg-secondary', 'p-3')
-            div.innerHTML = `<strong>Course ID: </strong>${json.id} <strong>Course name: </strong>${newCourseName}`;
-            div.onclick = () => {
-                loadCourse(this);
-            }
+            div.innerHTML = `<strong>
+                                Course ID: 
+                            </strong>
+                                ${json.id} 
+                            <strong>
+                                Course name: 
+                            </strong>
+                                ${newCourseName}`;
+            div.addEventListener('click', function (event) {
+                loadCourse(event.target);
+            });
             container.appendChild(div)
         } else if (json.failed) {
             alert('Something went wrong while creating a new user')

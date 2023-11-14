@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser, getCoursesOfStudent, createCourse, getChapters, getNotes } from './database.js';
+import { createUser, checkUser, getCoursesOfStudent, createCourse, getChapters, createChapter, getNotes } from './database.js';
 import session from 'express-session';
 const app = express();
 
@@ -101,6 +101,15 @@ app.get('/chapter', isAuthenticated, async (req, res) => {
     const chapters = await getChapters(req.session.courseId);
     console.log(req.session.courseId)
     res.render('chapter', { page_title: 'Chapter Page', userName: req.session.userName, chapters: chapters });
+})
+app.post('/createChapter', async (req, res) => {
+    const { newChapterName } = req.body;
+    const result = await createChapter(req.session.courseId, newChapterName)
+    if (result.insertId) {
+        res.json({ id: result.insertId, success: true });
+    } else {
+        res.json({ failed: true });
+    }
 })
 app.post('/loadchapter', (req, res) => {
     const { chapter_id } = req.body;
