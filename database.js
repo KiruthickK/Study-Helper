@@ -46,12 +46,17 @@ export async function createCourse(sid, course) {
     const [result] = await pool.query(`INSERT INTO courses (S_Id, Course_name) values (?, ?)`, [sid, course])
     return result;
 }
-export async function deleteCourse(sid, course) {
+export async function deleteCourse(cid, course) {
     // TODO
+    /**
+     * we need to perform delete operations from notes, then chapters then only we can perform delete the course
+     */
 }
-export async function updateCourse(sid, course) {
+export async function updateCourse(cid, course) {
+    const [result] = await pool.query('UPDATE courses SET Course_name = ? WHERE C_Id = ?', [course, cid]);
+    return result; //changedRows
+}
 
-}
 export async function getCoursesOfStudent(id) {
     const [courses] = await pool.query(`SELECT * FROM courses WHERE S_Id = ?`, [id]);
     return courses;
@@ -63,6 +68,13 @@ export async function getChapters(id) {
 export async function createChapter(cid, chapter) {
     const [result] = await pool.query(`INSERT INTO chapters(course_id, chapter_name) VALUES (?, ?)`, [cid, chapter])
     return result;
+}
+export async function updateChapter(cid, chapter) {
+    const [result] = await pool.query(`UPDATE chapters SET chapter_name = ? WHERE chapter_id = ?`, [chapter, cid]);
+    return result;
+}
+export async function deleteChapter() {
+
 }
 export async function getNotes(id) {
     const [notes] = await pool.query(`SELECT * FROM notes WHERE chapter_id = ?`, [id]);

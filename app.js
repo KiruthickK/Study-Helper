@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser, getCoursesOfStudent, createCourse, getChapters, createChapter, getNotes, createNotes } from './database.js';
+import { createUser, checkUser, getCoursesOfStudent, createCourse, updateCourse, getChapters, createChapter, updateChapter, getNotes, createNotes } from './database.js';
 import session from 'express-session';
 const app = express();
 
@@ -97,6 +97,15 @@ app.post('/createCourse', async (req, res) => {
         res.json({ failed: true });
     }
 })
+app.post('/editCourse', async (req, res) => {
+    const { newName, id } = req.body;
+    const result = await updateCourse(id, newName);
+    if (result.changedRows) {
+        res.json({ success: true });
+    } else {
+        res.json({ failed: true });
+    }
+})
 app.get('/chapter', isAuthenticated, async (req, res) => {
     const chapters = await getChapters(req.session.courseId);
     console.log(req.session.courseId)
@@ -107,6 +116,15 @@ app.post('/createChapter', async (req, res) => {
     const result = await createChapter(req.session.courseId, newChapterName)
     if (result.insertId) {
         res.json({ id: result.insertId, success: true });
+    } else {
+        res.json({ failed: true });
+    }
+})
+app.post('/editChapter', async (req, res) => {
+    const { newName, id } = req.body;
+    const result = await updateChapter(id, newName);
+    if (result.changedRows) {
+        res.json({ success: true });
     } else {
         res.json({ failed: true });
     }

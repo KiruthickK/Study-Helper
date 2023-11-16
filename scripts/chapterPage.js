@@ -36,7 +36,10 @@ function addChapter() {
             div.id = 'chapter_' + json.id;
             console.log(div.id)
             div.classList.add('row', 'rounded', 'bg-secondary', 'p-3')
-            div.innerHTML = `<strong>
+            div.innerHTML = `
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            onclick="editChapter(event,${json.id})">Edit</button>
+                            <strong>
                                 Chapter ID: 
                             </strong>
                             <span id="cid_${json.id}">
@@ -45,7 +48,7 @@ function addChapter() {
                             <strong>
                                 Chapter name: 
                             </strong>
-                            <span id="cname_${newChapterName}">
+                            <span id="cname_${json.id}">
                                 ${newChapterName}
                             </span>`;
             div.addEventListener('click', function (event) {
@@ -56,4 +59,30 @@ function addChapter() {
             alert('Something went wrong while creating a new user')
         }
     }).catch(err => console.log(err));
+}
+let editableChapterId = -1;
+function editChapter(event, id) {
+    event.stopPropagation();
+    event.stopPropagation();
+    const inpBox = document.getElementById('editChapterNameInput');
+    const titleSpan = document.getElementById(`cname_${id}`);
+    inpBox.value = titleSpan.innerText;
+    editableChapterId = id;
+}
+function saveEditedChanges() {
+    const newName = document.getElementById(`editChapterNameInput`).value;
+    fetch('/editChapter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ newName: newName, id: editableChapterId })
+    }).then(response => response.json()).then((json) => {
+        if (json.success) {
+            const titleSpan = document.getElementById(`cname_${editableChapterId}`);
+            titleSpan.innerText = newName;
+        }
+    }).catch((err) => {
+        console.log(err);
+    })
 }

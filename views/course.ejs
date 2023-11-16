@@ -17,8 +17,28 @@
                 <button onclick="addCourse()">Add</button>
             </span>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Course Name</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="editCourseNameInput" id="editCourseNameInput">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            onclick="saveEditedChanges()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <% courses.forEach(course=> { %>
             <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary p-3" onclick="loadCourse(this)">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    onclick="editCourse(event, `<%= course.C_Id %>`)">Edit</button>
                 <strong>Course ID:</strong>
                 <span id="cid_<%=course.C_Id %>">
                     <%= course.C_Id %>,

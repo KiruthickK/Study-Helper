@@ -37,10 +37,13 @@ function addCourse() {
             div.id = 'course_' + json.id;
             console.log(div.id)
             div.classList.add('row', 'rounded', 'bg-secondary', 'p-3')
-            div.innerHTML = `<strong>
+            div.innerHTML = `
+                            <button class="btn btn-primary d-flex" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            onclick="editCourse(event, ${json.id})">Edit</button>
+                            <strong>
                                 Course ID: 
                             </strong>
-                            <span id="cid_${json.id} %>">
+                            <span id="cid_${json.id}">
                                 ${json.id} 
                             </span>
                             <strong>
@@ -58,4 +61,29 @@ function addCourse() {
             alert('Something went wrong while creating a new user')
         }
     }).catch(err => console.log(err));
+}
+let editableCourseId = -1;
+function editCourse(event, id) {
+    event.stopPropagation();
+    const inpBox = document.getElementById('editCourseNameInput');
+    const titleSpan = document.getElementById(`cname_${id}`);
+    inpBox.value = titleSpan.innerText;
+    editableCourseId = id;
+}
+function saveEditedChanges() {
+    const newName = document.getElementById(`editCourseNameInput`).value;
+    fetch('/editCourse', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ newName: newName, id: editableCourseId })
+    }).then(response => response.json()).then((json) => {
+        if (json.success) {
+            const titleSpan = document.getElementById(`cname_${editableCourseId}`);
+            titleSpan.innerText = newName;
+        }
+    }).catch((err) => {
+        console.log(err);
+    })
 }

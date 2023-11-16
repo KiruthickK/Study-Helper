@@ -16,9 +16,29 @@
                 <button onclick="addChapter()">Add</button>
             </span>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Chapter Name</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="editChapterNameInput" id="editChapterNameInput">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            onclick="saveEditedChanges()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <% chapters.forEach(chapter=> { %>
             <div id="chapter_<%= chapter.chapter_id %>" class="row rounded bg-secondary" onclick="loadChapter(this)">
-                <strong>Course ID:</strong>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    onclick="editChapter(event, `<%= chapter.chapter_id %>`)">Edit</button>
+                <strong>Chapter ID:</strong>
                 <span id="cid_<%=chapter.chapter_id %>">
                     <%= chapter.chapter_id %>
                 </span>
