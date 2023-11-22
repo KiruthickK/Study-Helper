@@ -154,3 +154,13 @@ app.post('/editNotes', async (req, res) => {
         res.send({ failed: true });
     }
 })
+app.post('/deleteNotes', async (req, res) => {
+    const { id } = req.body;
+    // affectedRows
+    const result = await DataBase.deleteNotes(id);
+    if (result.affectedRows) {
+        res.send({ success: true });
+    } else {
+        res.send({ failed: true });
+    }
+})

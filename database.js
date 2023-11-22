@@ -85,9 +85,10 @@ export async function createNotes(cid, notes_title, notes) {
     return result;
 }
 export async function editNotes(id, topic, notes) {
-    console.log(id);
-    console.log('--Gap--')
-    console.log(topic)
     const [result] = await pool.query(`UPDATE notes SET topic = ?, notes = ? WHERE Notes_id  = ?`, [topic, notes, id]);
+    return result;
+}
+export async function deleteNotes(id) {
+    const [result] = await pool.query(`DELETE FROM notes WHERE Notes_id = ?`, [id]);
     return result;
 }

@@ -1,3 +1,5 @@
+const { json } = require("express");
+
 function loadNote(id) {
     const ch = id.id.split('_');
     const note_id = ch[1];
@@ -23,7 +25,11 @@ function addNotes() {
             div.id = 'note_' + json.id;
             console.log(div.id)
             div.classList.add('row', 'rounded', 'bg-secondary', 'p-3')
-            div.innerHTML = `<strong>
+            div.innerHTML = `
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    onclick="editNotes(event,  ${json.id})">Edit</button>
+            <button onclick="DeleteThisNotes(event, ${json.id})">Delete</button>
+            <strong>
             Notes ID: 
                             </strong>
                                 ${json.id} 
@@ -78,6 +84,24 @@ function saveEditedChanges() {
             document.getElementById(`note_notes_${editableId}`).innerText = changedContent;
         } else {
             alert('Something went wrong!' + json.success);
+        }
+    })
+}
+function DeleteThisNotes(event, id) {
+    event.stopPropagation();
+    fetch('/deleteNotes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+
+    }).then(response => response.json()).then((json) => {
+        if (json.success) {
+            const div = document.getElementById(`note_${id}`);
+            div.parentNode.removeChild(div);
+        } else {
+            alert('Cant delete this notes')
         }
     })
 }

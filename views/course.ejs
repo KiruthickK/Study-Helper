@@ -39,6 +39,7 @@
             <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary p-3" onclick="loadCourse(this)">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     onclick="editCourse(event, `<%= course.C_Id %>`)">Edit</button>
+                <button onclick="DeleteThisCourse(event, `<%= course.C_Id %>`)">Delete</button>
                 <strong>Course ID:</strong>
                 <span id="cid_<%=course.C_Id %>">
                     <%= course.C_Id %>,

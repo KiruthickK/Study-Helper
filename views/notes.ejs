@@ -49,6 +49,7 @@
             <div id="note_<%= note.Notes_id %>" class="row rounded bg-secondary" onclick="loadNote(this)">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     onclick="editNotes(event, `<%= note.Notes_id %>`)">Edit</button>
+                <button onclick="DeleteThisNotes(event, `<%= note.Notes_id %>`)">Delete</button>
                 <strong>Notes ID:</strong>
                 <span id="notes_id_<%=note.Notes_id%>">
                     <%= note.Notes_id %>,
