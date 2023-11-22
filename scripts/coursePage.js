@@ -12,7 +12,7 @@ function loadCourse(id) {
         if (result) {
             window.location.href = '/chapter'
         } else {
-            // ADD a message to handle error
+            alert('something went wrong')
         }
     }).catch((err) => {
         console.log(err)
@@ -40,6 +40,7 @@ function addCourse() {
             div.innerHTML = `
                             <button class="btn btn-primary d-flex" data-bs-toggle="modal" data-bs-target="#exampleModal"
                             onclick="editCourse(event, ${json.id})">Edit</button>
+                            <button onclick="DeleteThisCourse(event, ${json.id})">Delete</button>
                             <strong>
                                 Course ID: 
                             </strong>
@@ -85,5 +86,22 @@ function saveEditedChanges() {
         }
     }).catch((err) => {
         console.log(err);
+    })
+}
+function DeleteThisCourse(event, id) {
+    event.stopPropagation();
+    fetch('/deleteCourse', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    }).then(response => response.json()).then((json) => {
+        if (json.success) {
+            const div = document.getElementById(`course_${id}`)
+            div.parentNode.removeChild(div);
+        } else {
+            alert('Course cannot be deleted')
+        }
     })
 }

@@ -81,12 +81,12 @@ app.get('/course', isAuthenticated, async (req, res) => {
     const courses = await DataBase.getCoursesOfStudent(req.session.userId);
     res.render('course', { page_title: "Course Page", userName: req.session.userName, courses: courses })
 })
-app.post('/getcourse', (req, res) => {
+app.post('/getcourse', isAuthenticated, (req, res) => {
     const { course_id } = req.body;
     req.session.courseId = course_id;
     res.send({ yes: 'Yes' })
 })
-app.post('/createCourse', async (req, res) => {
+app.post('/createCourse', isAuthenticated, async (req, res) => {
     const { newCourseName } = req.body;
     const result = await DataBase.createCourse(req.session.userId, newCourseName)
     if (result.insertId) {
@@ -95,7 +95,7 @@ app.post('/createCourse', async (req, res) => {
         res.json({ failed: true });
     }
 })
-app.post('/editCourse', async (req, res) => {
+app.post('/editCourse', isAuthenticated, async (req, res) => {
     const { newName, id } = req.body;
     const result = await DataBase.updateCourse(id, newName);
     if (result.changedRows) {
@@ -104,11 +104,22 @@ app.post('/editCourse', async (req, res) => {
         res.json({ failed: true });
     }
 })
+app.post('/deleteCourse', isAuthenticated, async (req, res) => {
+    const { id } = req.body;
+    const result = await DataBase.deleteCourse(id);
+    if (result.affectedRows) {
+        console.log('yes?')
+        res.json({ success: true });
+    } else {
+        console.log('no?')
+        res.json({ failed: true });
+    }
+})
 app.get('/chapter', isAuthenticated, async (req, res) => {
     const chapters = await DataBase.getChapters(req.session.courseId);
     res.render('chapter', { page_title: 'Chapter Page', userName: req.session.userName, chapters: chapters });
 })
-app.post('/createChapter', async (req, res) => {
+app.post('/createChapter', isAuthenticated, async (req, res) => {
     const { newChapterName } = req.body;
     const result = await DataBase.createChapter(req.session.courseId, newChapterName)
     if (result.insertId) {
@@ -117,7 +128,7 @@ app.post('/createChapter', async (req, res) => {
         res.json({ failed: true });
     }
 })
-app.post('/editChapter', async (req, res) => {
+app.post('/editChapter', isAuthenticated, async (req, res) => {
     const { newName, id } = req.body;
     const result = await DataBase.updateChapter(id, newName);
     if (result.changedRows) {
@@ -126,12 +137,12 @@ app.post('/editChapter', async (req, res) => {
         res.json({ failed: true });
     }
 })
-app.post('/loadchapter', (req, res) => {
+app.post('/loadchapter', isAuthenticated, (req, res) => {
     const { chapter_id } = req.body;
     req.session.chapter_id = chapter_id;
     res.send({ yes: 'yes' })
 })
-app.post('/deleteChapter', async (req, res) => {
+app.post('/deleteChapter', isAuthenticated, async (req, res) => {
     const { id } = req.body;
     const result = await DataBase.deleteChapter(id);
     if (result.affectedRows) {
@@ -145,7 +156,7 @@ app.get('/notes', isAuthenticated, async (req, res) => {
     const notes = await DataBase.getNotes(req.session.chapter_id);
     res.render('notes', { page_title: 'Notes Page', userName: req.session.userName, notes: notes });
 })
-app.post('/createNotes', async (req, res) => {
+app.post('/createNotes', isAuthenticated, async (req, res) => {
     const { newNotesTitle, notes } = req.body;
     const result = await DataBase.createNotes(req.session.chapter_id, newNotesTitle, notes);
     if (result.insertId) {
@@ -154,7 +165,7 @@ app.post('/createNotes', async (req, res) => {
         res.json({ failed: true });
     }
 });
-app.post('/editNotes', async (req, res) => {
+app.post('/editNotes', isAuthenticated, async (req, res) => {
     const { id, topic, notes } = req.body;
     const result = await DataBase.editNotes(id, topic, notes);
     if (result.changedRows) {
@@ -163,7 +174,7 @@ app.post('/editNotes', async (req, res) => {
         res.send({ failed: true });
     }
 })
-app.post('/deleteNotes', async (req, res) => {
+app.post('/deleteNotes', isAuthenticated, async (req, res) => {
     const { id } = req.body;
     // affectedRows
     const result = await DataBase.deleteNotes(id);

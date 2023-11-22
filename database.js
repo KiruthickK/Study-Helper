@@ -48,7 +48,7 @@ export async function createCourse(sid, course) {
 }
 export async function deleteCourse(cid) {
     const res = await deleteChapterFromCourseId(cid);
-    if (res.affectedRows >= 1) {
+    if (res.affectedRows >= 0) {
         const [result] = await pool.query(`DELETE FROM courses WHERE C_Id = ?`, [cid]);
         return result;
     }
