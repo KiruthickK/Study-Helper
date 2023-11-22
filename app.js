@@ -1,7 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createUser, checkUser, getCoursesOfStudent, createCourse, updateCourse, getChapters, createChapter, updateChapter, getNotes, createNotes } from './database.js';
+import * as DataBase from './database.js';
 import session from 'express-session';
 const app = express();
 
@@ -34,8 +34,7 @@ app.get('/', (req, res) => {
 
 app.get('/login', async (req, res) => {
     if (req.session.authenticated) {
-        const courses = await getCoursesOfStudent(req.session.userId)
-        console.log(courses)
+        const courses = await DataBase.getCoursesOfStudent(req.session.userId)
         res.render('course', { page_title: "Course Page", userName: req.session.userName, courses: courses })
         // TODO send course page with revelant links I mean handle here
     } else {
@@ -48,7 +47,7 @@ app.get('/signup', (req, res) => {
 // TODO sign up later
 app.post('/signup', async (req, res) => {
     const { username, roll_no, age, email, password } = req.body;
-    const isAccountCreated = await createUser(username, age, email, roll_no, password);
+    const isAccountCreated = await DataBase.createUser(username, age, email, roll_no, password);
     if (isAccountCreated.failed) {
         res.json({ 'emailExsisting': 'true' })
     } else {
@@ -60,11 +59,10 @@ app.post('/signup', async (req, res) => {
 })
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const result = await checkUser(email, password)
+    const result = await DataBase.checkUser(email, password)
     if (result.failed) {
         console.log('failed');
     } else {
-        console.log(result)
         console.log('User Authenticated...')
         req.session.authenticated = true;
         req.session.userId = result.id
@@ -80,7 +78,7 @@ function isAuthenticated(req, res, next) {
     }
 }
 app.get('/course', isAuthenticated, async (req, res) => {
-    const courses = await getCoursesOfStudent(req.session.userId);
+    const courses = await DataBase.getCoursesOfStudent(req.session.userId);
     res.render('course', { page_title: "Course Page", userName: req.session.userName, courses: courses })
 })
 app.post('/getcourse', (req, res) => {
@@ -90,7 +88,7 @@ app.post('/getcourse', (req, res) => {
 })
 app.post('/createCourse', async (req, res) => {
     const { newCourseName } = req.body;
-    const result = await createCourse(req.session.userId, newCourseName)
+    const result = await DataBase.createCourse(req.session.userId, newCourseName)
     if (result.insertId) {
         res.json({ id: result.insertId, success: true });
     } else {
@@ -99,7 +97,7 @@ app.post('/createCourse', async (req, res) => {
 })
 app.post('/editCourse', async (req, res) => {
     const { newName, id } = req.body;
-    const result = await updateCourse(id, newName);
+    const result = await DataBase.updateCourse(id, newName);
     if (result.changedRows) {
         res.json({ success: true });
     } else {
@@ -107,13 +105,12 @@ app.post('/editCourse', async (req, res) => {
     }
 })
 app.get('/chapter', isAuthenticated, async (req, res) => {
-    const chapters = await getChapters(req.session.courseId);
-    console.log(req.session.courseId)
+    const chapters = await DataBase.getChapters(req.session.courseId);
     res.render('chapter', { page_title: 'Chapter Page', userName: req.session.userName, chapters: chapters });
 })
 app.post('/createChapter', async (req, res) => {
     const { newChapterName } = req.body;
-    const result = await createChapter(req.session.courseId, newChapterName)
+    const result = await DataBase.createChapter(req.session.courseId, newChapterName)
     if (result.insertId) {
         res.json({ id: result.insertId, success: true });
     } else {
@@ -122,7 +119,7 @@ app.post('/createChapter', async (req, res) => {
 })
 app.post('/editChapter', async (req, res) => {
     const { newName, id } = req.body;
-    const result = await updateChapter(id, newName);
+    const result = await DataBase.updateChapter(id, newName);
     if (result.changedRows) {
         res.json({ success: true });
     } else {
@@ -136,16 +133,24 @@ app.post('/loadchapter', (req, res) => {
 })
 
 app.get('/notes', isAuthenticated, async (req, res) => {
-    const notes = await getNotes(req.session.chapter_id);
+    const notes = await DataBase.getNotes(req.session.chapter_id);
     res.render('notes', { page_title: 'Notes Page', userName: req.session.userName, notes: notes });
 })
 app.post('/createNotes', async (req, res) => {
     const { newNotesTitle, notes } = req.body;
-    const result = await createNotes(req.session.chapter_id, newNotesTitle, notes);
+    const result = await DataBase.createNotes(req.session.chapter_id, newNotesTitle, notes);
     if (result.insertId) {
         res.json({ id: result.insertId, success: true });
     } else {
         res.json({ failed: true });
     }
+});
+app.post('/editNotes', async (req, res) => {
+    const { id, topic, notes } = req.body;
+    const result = await DataBase.editNotes(id, topic, notes);
+    if (result.changedRows) {
+        res.send({ success: true });
+    } else {
+        res.send({ failed: true });
+    }
 })
-

@@ -19,18 +19,46 @@
                 <button onclick="addNotes()">Add</button>
             </span>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Notes topic</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="editNotesTopicInput" id="editNotesTopicInput">
+                    </div>
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Notes content</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="edit_notes_content" name="edit_notes_content" rows="8" cols="50"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            onclick="saveEditedChanges()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <% notes.forEach(note=> { %>
-            <div id="note_<%= note.note_id %>" class="row rounded bg-secondary" onclick="loadNote(this)">
+            <div id="note_<%= note.Notes_id %>" class="row rounded bg-secondary" onclick="loadNote(this)">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    onclick="editNotes(event, `<%= note.Notes_id %>`)">Edit</button>
                 <strong>Notes ID:</strong>
-                <span id="notes_id_<%=note.note_id%>">
+                <span id="notes_id_<%=note.Notes_id%>">
                     <%= note.Notes_id %>,
                 </span>
                 <strong>Topic:</strong>
-                <span id="note_topic_<%=note.note_id%>">
+                <span id="note_topic_<%=note.Notes_id%>">
                     <%= note.topic %>
                 </span>
                 <strong>Notes:</strong>
-                <span id="note_notes_<%=note.note_id%>">
+                <span id="note_notes_<%=note.Notes_id%>">
                     <%= note.notes %>
                 </span>
             </div>

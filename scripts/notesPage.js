@@ -51,3 +51,33 @@ function addNotes() {
         }
     }).catch(err => console.log(err));
 }
+let editableId = -1;
+function editNotes(event, id) {
+    event.stopPropagation();
+    const topicInput = document.getElementById('editNotesTopicInput');
+    const contentInput = document.getElementById('edit_notes_content');
+    const clicked_topic = document.getElementById(`note_topic_${id}`);
+    const clicked_content = document.getElementById(`note_notes_${id}`);
+    topicInput.value = clicked_topic.innerText;
+    contentInput.value = clicked_content.innerText;
+    editableId = id;
+}
+function saveEditedChanges() {
+    console.log(editableId)
+    const changedTopic = document.getElementById('editNotesTopicInput').value;
+    const changedContent = document.getElementById('edit_notes_content').value;
+    fetch('/editNotes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: editableId, topic: changedTopic, notes: changedContent })
+    }).then(response => response.json()).then((json) => {
+        if (json.success) {
+            document.getElementById(`note_topic_${editableId}`).innerText = changedTopic;
+            document.getElementById(`note_notes_${editableId}`).innerText = changedContent;
+        } else {
+            alert('Something went wrong!' + json.success);
+        }
+    })
+}
