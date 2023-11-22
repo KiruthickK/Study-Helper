@@ -131,6 +131,15 @@ app.post('/loadchapter', (req, res) => {
     req.session.chapter_id = chapter_id;
     res.send({ yes: 'yes' })
 })
+app.post('/deleteChapter', async (req, res) => {
+    const { id } = req.body;
+    const result = await DataBase.deleteChapter(id);
+    if (result.affectedRows) {
+        res.send({ success: true });
+    } else {
+        res.send({ failed: false });
+    }
+})
 
 app.get('/notes', isAuthenticated, async (req, res) => {
     const notes = await DataBase.getNotes(req.session.chapter_id);

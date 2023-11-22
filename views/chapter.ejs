@@ -38,6 +38,7 @@
             <div id="chapter_<%= chapter.chapter_id %>" class="row rounded bg-secondary" onclick="loadChapter(this)">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     onclick="editChapter(event, `<%= chapter.chapter_id %>`)">Edit</button>
+                <button onclick="deleteChapter(event, `<%= chapter.chapter_id %>`)">Delete</button>
                 <strong>Chapter ID:</strong>
                 <span id="cid_<%=chapter.chapter_id %>">
                     <%= chapter.chapter_id %>

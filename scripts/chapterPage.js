@@ -39,6 +39,7 @@ function addChapter() {
             div.innerHTML = `
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
                             onclick="editChapter(event,${json.id})">Edit</button>
+                            <button onclick="deleteChapter(event, ${json.id})">Delete</button>
                             <strong>
                                 Chapter ID: 
                             </strong>
@@ -84,5 +85,22 @@ function saveEditedChanges() {
         }
     }).catch((err) => {
         console.log(err);
+    })
+}
+function deleteChapter(event, id) {
+    event.stopPropagation();
+    fetch('/deleteChapter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    }).then(response => response.json()).then((json) => {
+        if (json.success) {
+            const div = document.getElementById(`chapter_${id}`);
+            div.parentNode.removeChild(div);
+        } else {
+            alert('np')
+        }
     })
 }

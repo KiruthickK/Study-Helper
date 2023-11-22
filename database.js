@@ -46,11 +46,14 @@ export async function createCourse(sid, course) {
     const [result] = await pool.query(`INSERT INTO courses (S_Id, Course_name) values (?, ?)`, [sid, course])
     return result;
 }
-export async function deleteCourse(cid, course) {
-    // TODO
-    /**
-     * we need to perform delete operations from notes, then chapters then only we can perform delete the course
-     */
+export async function deleteCourse(cid) {
+    const res = await deleteChapterFromCourseId(cid);
+    if (res.affectedRows >= 1) {
+        const [result] = await pool.query(`DELETE FROM courses WHERE C_Id = ?`, [cid]);
+        return result;
+    }
+    return res;
+
 }
 export async function updateCourse(cid, course) {
     const [result] = await pool.query('UPDATE courses SET Course_name = ? WHERE C_Id = ?', [course, cid]);
@@ -73,8 +76,13 @@ export async function updateChapter(cid, chapter) {
     const [result] = await pool.query(`UPDATE chapters SET chapter_name = ? WHERE chapter_id = ?`, [chapter, cid]);
     return result;
 }
-export async function deleteChapter() {
-
+export async function deleteChapterFromCourseId(id) {
+    const [result] = await pool.query(`DELETE FROM chapters WHERE course_id = ?`, [id]);
+    return result;
+}
+export async function deleteChapter(id) {
+    const [result] = await pool.query(`DELETE FROM chapters WHERE chapter_id = ?`, [id]);
+    return result;
 }
 export async function getNotes(id) {
     const [notes] = await pool.query(`SELECT * FROM notes WHERE chapter_id = ?`, [id]);
