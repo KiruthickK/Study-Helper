@@ -1,0 +1,12 @@
+@font-face {
+    font-family: Quick-sand;
+    src: url("Quicksand/static/Quicksand-Regular.ttf");
+  }
+  body {
+    font-family: Quick-sand;
+    background-color: rgb(250, 236, 219);
+    color: rgb(119, 31, 31);
+  }
+  p{
+    color:  rgb(66, 53, 53);
+  }
