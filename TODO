@@ -1,8 +1,10 @@
 Things to do
-    Make a function like RequireAuth to check the user is logged in or not
-    
+    Make a function like RequireAuth to check the user is logged in or not --done
+    Validations for signup 
+        password strength
+        inputs filled?
 
-Updates to do
+Updates to do later
     instead of having many functions that make similar job
     make a same function with addded parameters so that can be reused many number of times
     example : { getNotes, etc in database.js}
