@@ -62,13 +62,23 @@ app.post('/login', async (req, res) => {
     const result = await DataBase.checkUser(email, password)
     if (result.failed) {
         console.log('failed');
+        res.json({ failed: true })
     } else {
         console.log('User Authenticated...')
         req.session.authenticated = true;
         req.session.userId = result.id
         req.session.userName = result.username
-        res.json(result)
+        res.json({ success: true })
     }
+})
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('index', { page_title: 'StudyHelper' })
+        }
+    })
 })
 function isAuthenticated(req, res, next) {
     if (req.session.authenticated) {

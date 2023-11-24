@@ -6,10 +6,28 @@
     </div>
     </nav>
 
-    <div class="container bg-light mt-3">
-        <input type="email" name="email_id" id="email_id" required><br>
-        <input type="password" name="password" id="password" required><br>
-        <button onclick="LoginUser()">Submit</button>
+    <div class="container bg-light mt-5 rounded col-xl-4 ps-3 pt-3 ">
+        <div class="row p-1">
+            <div class="col-xl-2 col-md-3 col-xs-12">
+                Email
+            </div>
+            <div class="col-xl-5 col-md-4 col-xs-12">
+                <input type="text" class="form-control custom-font-size" name="email_id" id="email_id"
+                    placeholder="Enter Email">
+            </div>
+        </div>
+        <div class="row p-1 mb-4 mt-2">
+            <div class="col-xl-2 col-md-3 col-xs-12">
+                Password
+            </div>
+            <div class="col-xl-5 col-md-4 col-xs-12">
+                <input type="text" class="form-control custom-font-size" name="password" id="password"
+                    placeholder="Enter password">
+            </div>
+        </div>
+        <div class="text-center">
+            <button onclick="LoginUser()" class="btn btn-dark mb-3">Submit</button>
+        </div>
     </div>
     <script src="/scripts/login.js"></script>
     </body>
