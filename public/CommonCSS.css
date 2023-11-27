@@ -26,3 +26,6 @@
                    0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
     }
   }
+  .bg-custom-back-div{
+    background-color: rgb(193, 210, 224);
+}

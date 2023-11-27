@@ -5,17 +5,18 @@
     </div>
     </nav>
 
-    <div class="container bg-light pt-3" id="mainDiv">
+    <div class="container bg-custom-back-div p-3 rounded mb-5" id="mainDiv">
         <h1>Hi <%= userName %>
         </h1>
         <h1>List of Courses</h1>
         <br>
-        <div class="row">
-            <button onclick="showForm()">Add a new course</button>
-            <span class="d-none" id="course_input_form">
+        <div class="row d-flex">
+            <button onclick="showForm()" class="btn btn-secondary">Add a new course</button>
+            <span class="d-none justify-contents-center" id="course_input_form">
                 Enter the course name <br>
-                <input type="text" name="new_course_name" id="new_course_name">
-                <button onclick="addCourse()">Add</button>
+                <input type="text" name="new_course_name" id="new_course_name" class="form-control mb-2">
+                <button onclick="addCourse()" class="btn btn-dark">Add</button>
+                <button onclick="addCourseCancel()" class="btn btn-danger">Cancel</button>
             </span>
         </div>
         <!-- Modal -->
@@ -36,15 +37,14 @@
                 </div>
             </div>
         </div>
+        <!-- <div></div> -->
         <% courses.forEach(course=> { %>
-            <div id="course_<%= course.C_Id %>" class="row rounded bg-secondary p-3" onclick="loadCourse(this)">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    onclick="editCourse(event, `<%= course.C_Id %>`)">Edit</button>
-                <button onclick="DeleteThisCourse(event, `<%= course.C_Id %>`)">Delete</button>
-                <strong>Course ID:</strong>
-                <span id="cid_<%=course.C_Id %>">
-                    <%= course.C_Id %>,
-                </span>
+            <div id="course_<%= course.C_Id %>" class="m-5 rounded bg-light p-3 position-relative"
+                onclick="loadCourse(this)">
+                <button class="btn btn-info position-relative  m-1" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" onclick="editCourse(event, `<%= course.C_Id %>`)">Edit</button>
+                <button onclick="DeleteThisCourse(event, `<%= course.C_Id %>`)"
+                    class="btn btn-danger position-absolute top-0 end-0 m-1">Delete</button>
                 <strong>Course Name:</strong>
                 <span id="cname_<%=course.C_Id %>">
                     <%= course.Course_name %>

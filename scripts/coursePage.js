@@ -21,6 +21,9 @@ function loadCourse(id) {
 function showForm() {
     document.getElementById('course_input_form').classList.remove('d-none')
 }
+function addCourseCancel() {
+    document.getElementById('course_input_form').classList.add('d-none')
+}
 function addCourse() {
     const newCourseName = document.getElementById('new_course_name').value;
     fetch('/createCourse', {
@@ -36,17 +39,11 @@ function addCourse() {
             const div = document.createElement('div');
             div.id = 'course_' + json.id;
             console.log(div.id)
-            div.classList.add('row', 'rounded', 'bg-secondary', 'p-3')
+            div.classList.add('m-5', 'rounded', 'bg-light', 'p-3', 'position-relative')
             div.innerHTML = `
-                            <button class="btn btn-primary d-flex" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            <button class="btn btn-info position-relative  m-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
                             onclick="editCourse(event, ${json.id})">Edit</button>
-                            <button onclick="DeleteThisCourse(event, ${json.id})">Delete</button>
-                            <strong>
-                                Course ID: 
-                            </strong>
-                            <span id="cid_${json.id}">
-                                ${json.id} 
-                            </span>
+                            <button onclick="DeleteThisCourse(event, ${json.id})" class="btn btn-danger position-absolute top-0 end-0 m-1">Delete</button>
                             <strong>
                                 Course name: 
                             </strong>
@@ -58,6 +55,7 @@ function addCourse() {
                 loadCourse(event.target);
             });
             container.appendChild(div)
+            document.getElementById('course_input_form').classList.add('d-none')
         } else if (json.failed) {
             alert('Something went wrong while creating a new user')
         }
