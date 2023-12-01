@@ -4,17 +4,18 @@
     </div>
     </div>
     </nav>
-    <div class="container bg-light pt-3" id="mainDiv">
+    <div class="container bg-custom-back-div p-3 rounded mb-5" id="mainDiv">
         <h1>Hi <%= userName %>
         </h1>
         <h1>List of chapters</h1>
         <br>
         <div class="row">
-            <button onclick="showForm()">Add a new Chapter</button>
+            <button onclick="showForm()" class="btn btn-secondary">Add a new Chapter</button>
             <span class="d-none" id="chapter_input_form">
                 Enter the Chapter name <br>
-                <input type="text" name="new_chapter_name" id="new_chapter_name">
-                <button onclick="addChapter()">Add</button>
+                <input type="text" name="new_chapter_name" id="new_chapter_name" class="form-control mb-2">
+                <button onclick="addChapter()" class="btn btn-dark">Add</button>
+                <button onclick="addCourseCancel()" class="btn btn-danger">Cancel</button>
             </span>
         </div>
         <!-- Modal -->
@@ -36,14 +37,13 @@
             </div>
         </div>
         <% chapters.forEach(chapter=> { %>
-            <div id="chapter_<%= chapter.chapter_id %>" class="row rounded bg-secondary" onclick="loadChapter(this)">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            <div id="chapter_<%= chapter.chapter_id %>" class="m-5 rounded bg-light p-3 position-relative"
+                onclick="loadChapter(this)">
+                <button class="btn btn-info position-relative  m-1" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
                     onclick="editChapter(event, `<%= chapter.chapter_id %>`)">Edit</button>
-                <button onclick="deleteChapter(event, `<%= chapter.chapter_id %>`)">Delete</button>
-                <strong>Chapter ID:</strong>
-                <span id="cid_<%=chapter.chapter_id %>">
-                    <%= chapter.chapter_id %>
-                </span>
+                <button onclick="deleteChapter(event, `<%= chapter.chapter_id %>`)"
+                    class="btn btn-danger position-absolute top-0 end-0 m-1">Delete</button>
                 <strong>Chapter Name:</strong>
                 <span id="cname_<%=chapter.chapter_id %>">
                     <%= chapter.chapter_name %>
