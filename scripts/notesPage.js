@@ -1,5 +1,3 @@
-const { json } = require("express");
-
 function loadNote(id) {
     const ch = id.id.split('_');
     const note_id = ch[1];
@@ -27,25 +25,17 @@ function addNotes() {
             const div = document.createElement('div');
             div.id = 'note_' + json.id;
             console.log(div.id)
-            div.classList.add('row', 'rounded', 'bg-secondary', 'p-3')
+            div.classList.add('m-5', 'rounded', 'bg-light', 'p-3', 'position-relative')
             div.innerHTML = `
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            <button class="btn btn-info position-relative  m-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
                     onclick="editNotes(event,  ${json.id})">Edit</button>
-            <button onclick="DeleteThisNotes(event, ${json.id})">Delete</button>
-            <strong>
-            Notes ID: 
-                            </strong>
-                                ${json.id} 
-                            <strong>
-                            <span id="notes_id_${json.id}">
-                                Notes topic: 
-                            </span>
-                            </strong>
-                            <span id="note_topic_${json.id}">
+            <button onclick="DeleteThisNotes(event, ${json.id})" class="btn btn-danger position-absolute top-0 end-0 m-1">Delete</button>
+                            <strong id="note_topic_${json.id}">
                                 ${newNotesTitle}
-                            </span>
+                            </strong>
+                            <br>
                             <strong>
-                                Notes
+                                Notes:
                             </strong>
                             <span id="note_notes_${json.id}">
                                 ${notes}
@@ -71,6 +61,7 @@ function editNotes(event, id) {
     topicInput.value = clicked_topic.innerText;
     contentInput.value = clicked_content.innerText;
     editableId = id;
+    console.log(id)
 }
 function saveEditedChanges() {
     console.log(editableId)
