@@ -8,6 +8,9 @@ function loadNote(id) {
 function showForm() {
     document.getElementById('notes_input_form').classList.remove('d-none')
 }
+function addCourseCancel() {
+    document.getElementById('notes_input_form').classList.add('d-none')
+}
 function addNotes() {
     const newNotesTitle = document.getElementById('new_notes_name').value;
     const notes = document.getElementById('notes_content').value;
@@ -52,6 +55,7 @@ function addNotes() {
                 loadCourse(event.target);
             });
             container.appendChild(div)
+            addCourseCancel();
         } else if (json.failed) {
             alert('Something went wrong while creating a new user')
         }

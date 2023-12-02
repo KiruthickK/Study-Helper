@@ -5,19 +5,21 @@
     </div>
     </nav>
 
-    <div class="container bg-light pt-3" id="mainDiv">
+    <div class="container bg-custom-back-div p-3 rounded mb-5" id="mainDiv">
         <h1>Hi <%= userName %>
         </h1>
         <h1>List of chapters</h1>
         <br>
         <div class="row">
-            <button onclick="showForm()">Add notes</button>
+            <button onclick="showForm()" class="btn btn-secondary">Add notes</button>
             <span class="d-none" id="notes_input_form">
                 Enter the Topic<br>
-                <input type="text" name="new_notes_name" id="new_notes_name">
+                <input type="text" name="new_notes_name" id="new_notes_name" class="form-control mb-2">
                 Enter the notes <br>
-                <textarea id="notes_content" name="notes_content" rows="8" cols="50"></textarea>
-                <button onclick="addNotes()">Add</button>
+                <textarea id="notes_content" name="notes_content" rows="8" cols="50"
+                    class="form-control mb-2"></textarea>
+                <button onclick="addNotes()" class="btn btn-dark">Add</button>
+                <button onclick="addCourseCancel()" class="btn btn-danger">Cancel</button>
             </span>
         </div>
         <!-- Modal -->
@@ -47,18 +49,15 @@
             </div>
         </div>
         <% notes.forEach(note=> { %>
-            <div id="note_<%= note.Notes_id %>" class="row rounded bg-secondary" onclick="loadNote(this)">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    onclick="editNotes(event, `<%= note.Notes_id %>`)">Edit</button>
-                <button onclick="DeleteThisNotes(event, `<%= note.Notes_id %>`)">Delete</button>
-                <strong>Notes ID:</strong>
-                <span id="notes_id_<%=note.Notes_id%>">
-                    <%= note.Notes_id %>,
-                </span>
-                <strong>Topic:</strong>
-                <span id="note_topic_<%=note.Notes_id%>">
+            <div id="note_<%= note.Notes_id %>" class="m-5 rounded bg-light p-3 position-relative"
+                onclick="loadNote(this)">
+                <button class="btn btn-info position-relative  m-1" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" onclick="editNotes(event, `<%= note.Notes_id %>`)">Edit</button>
+                <button onclick="DeleteThisNotes(event, `<%= note.Notes_id %>`)"
+                    class="btn btn-danger position-absolute top-0 end-0 m-1">Delete</button>
+                <strong id="note_topic_<%=note.Notes_id%>">
                     <%= note.topic %>
-                </span>
+                </strong><br>
                 <strong>Notes:</strong>
                 <span id="note_notes_<%=note.Notes_id%>">
                     <%= note.notes %>
