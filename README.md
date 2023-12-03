@@ -22,6 +22,7 @@ This is a platform where students can save and use their class notes.
 <ul>
     <li>Table details
         <br>
+        <pre>
         +-----------------------+
 | Tables_in_studyhelper |
 +-----------------------+
@@ -30,5 +31,6 @@ This is a platform where students can save and use their class notes.
 | notes                 |
 | student               |
 +-----------------------+
+</pre>
     </li>
 </ul>
