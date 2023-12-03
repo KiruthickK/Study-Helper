@@ -23,7 +23,7 @@ This is a platform where students can save and use their class notes.
     <li>Table details
         <br>
         <pre>
-        +-----------------------+
++-----------------------+
 | Tables_in_studyhelper |
 +-----------------------+
 | chapters              |
@@ -33,4 +33,62 @@ This is a platform where students can save and use their class notes.
 +-----------------------+
 </pre>
     </li>
+    <li>
+    student table description
+<br>
+<pre>
++------------+-------------+------+-----+-------------------+-------------------+
+| Field      | Type        | Null | Key | Default           | Extra             |
++------------+-------------+------+-----+-------------------+-------------------+
+| S_Id       | int         | NO   | PRI | NULL              | auto_increment    |
+| name       | varchar(32) | NO   |     | NULL              |                   |
+| age        | int         | NO   |     | NULL              |                   |
+| email      | varchar(64) | NO   | UNI | NULL              |                   |
+| roll_no    | varchar(30) | YES  |     | NULL              |                   |
+| time_stamp | datetime    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| password   | varchar(30) | NO   |     | NULL              |                   |
++------------+-------------+------+-----+-------------------+-------------------+
+</pre>
+    </li>
+    <li>
+    Course table description
+    <br>
+    <pre>
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| S_Id        | int         | YES  | MUL | NULL    |                |
+| C_Id        | int         | NO   | PRI | NULL    | auto_increment |
+| Course_name | varchar(32) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+    </pre>
+    </li>
+    <li>
+        <pre>
+Chapters tables description
+        <br>
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| chapter_id   | int         | NO   | PRI | NULL    | auto_increment |
+| course_id    | int         | YES  | MUL | NULL    |                |
+| chapter_name | varchar(32) | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+        </pre>
+    </li>
+    <li>
+Notes table description
+    <br>
+    <pre>
++------------+---------------+------+-----+---------+----------------+
+| Field      | Type          | Null | Key | Default | Extra          |
++------------+---------------+------+-----+---------+----------------+
+| Notes_id   | int           | NO   | PRI | NULL    | auto_increment |
+| chapter_id | int           | YES  | MUL | NULL    |                |
+| topic      | varchar(32)   | NO   |     | NULL    |                |
+| notes      | varchar(2048) | NO   |     | NULL    |                |
++------------+---------------+------+-----+---------+----------------+
+    </pre>
+    </li>
 </ul>
+Thanks for visiting!
