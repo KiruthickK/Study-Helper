@@ -19,6 +19,7 @@ This is a platform where students can save and use their class notes.
     <li>Run 'node app' to start the server</li>
 </ol>
 <h2> Database Details</h2>
+<b>Note: Change your database connection details in the .env file</b>
 <ul>
     <li>Table details
         <br>
